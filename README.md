@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                     Dashboard ("/host")
+        -                                 Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -155,3 +155,38 @@ Fixed with **index property**
 	</Routes>
 </BrowserRouter>
 ```
+
+## To nest or not to nest?
+
+## Quiz
+
+1. What is the primary reason to use a nested route?
+   Whenever we have some shared UI between routes in our app.
+
+2. What is a "Layout Route"?
+   It's the parent route of some nested routes that contains just
+   the portion of the UI that will be shared. It will use an Outlet
+   component.
+
+3. What does the <Outlet /> component do? When do you use it?
+   We use it anytime we have a parent Route that's wrapping
+   children routes. It renders the matching child route's
+   `element` prop given in its route definition
+
+4. What is an "Index Route"?
+   It's the "default route" we want to render when the path
+   of the parent route matches. It gives us a chance to render
+   an element inside the parent's <Outlet /> at the same path
+   as the parent route.
+
+-   Challenge: Add the footer to the site! Make a separate Footer component
+    in the components folder, and just use this as the markup:
+
+  <footer>&#169; 2022 #VANLIFE</footer>
+  
+  I'm mostly wanting to test your ability to find where the footer would
+  be added, and don't care too much about getting the styling correct.
+  But if you feel you need extra CSS practice, feel free to do the styling
+  as well!
+
+## NavLink
