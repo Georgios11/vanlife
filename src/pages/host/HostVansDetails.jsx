@@ -1,11 +1,15 @@
 import React from "react";
-import { Link, NavLink, useParams } from "react-router";
+import { Link, NavLink, Outlet, useParams } from "react-router";
 
 const HostVansDetails = () => {
 	const { id } = useParams();
-	console.log(id);
-	const [van, setVan] = React.useState(null);
 
+	const [van, setVan] = React.useState(null);
+	const activeStyles = {
+		fontWeight: "bold",
+		textDecoration: "underline",
+		color: "#161616",
+	};
 	React.useEffect(() => {
 		fetch(`/api/host/vans/${id}`)
 			.then((res) => res.json())
@@ -15,6 +19,7 @@ const HostVansDetails = () => {
 	if (!van) {
 		return <h1>Loading...</h1>;
 	}
+
 	return (
 		<section>
 			<Link to=".." relative="path" className="back-button">
@@ -32,10 +37,35 @@ const HostVansDetails = () => {
 					</div>
 				</div>
 				<nav className="host-van-detail-nav ">
-					<Link>Details</Link>
-					<Link>Pricing</Link>
-					<Link>Photos</Link>
+					<NavLink
+						to="."
+						end
+						style={({ isActive }) =>
+							isActive ? activeStyles : null
+						}
+					>
+						Details
+					</NavLink>
+					<NavLink
+						to="pricing"
+						state={van.price}
+						style={({ isActive }) =>
+							isActive ? activeStyles : null
+						}
+					>
+						Pricing
+					</NavLink>
+					<NavLink
+						to="photos"
+						state={van.imageUrl}
+						style={({ isActive }) =>
+							isActive ? activeStyles : null
+						}
+					>
+						Photos
+					</NavLink>
 				</nav>
+				<Outlet />
 			</div>
 		</section>
 	);
