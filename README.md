@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                     Dashboard ("/host")
+        -                                                                             Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -277,3 +277,17 @@ to = ".";
 
     -   Since we don't have the navbar yet, you can test them
         by manually navigating to e.g. /host/vans/1/pricing.
+
+## Outlet Context
+
+We pass the Context to Outlet
+
+```javascript
+<Outlet context={{ van }} />
+```
+
+We use the Context
+
+```javascript
+const { van } = useOutletContext();
+```

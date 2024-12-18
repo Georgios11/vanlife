@@ -1,12 +1,11 @@
 import React from "react";
-import { useLocation } from "react-router";
+import { useLocation, useOutletContext } from "react-router";
 
 const HostVanPricing = () => {
-	const location = useLocation();
-	console.log(location.state);
+	const { van } = useOutletContext();
 	return (
 		<div>
-			<span className="host-van-price">${location.state}.00</span>/day
+			<span className="host-van-price">${van.price}.00</span>/day
 		</div>
 	);
 };

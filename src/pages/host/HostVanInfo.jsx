@@ -1,15 +1,8 @@
 import React, { useState } from "react";
-import { useLocation, useParams } from "react-router";
+import { useLocation, useParams, useOutletContext } from "react-router";
 
 const HostVanInfo = () => {
-	const { id } = useParams();
-	const [van, setVan] = useState(null);
-	React.useEffect(() => {
-		fetch(`/api/host/vans/${id}`)
-			.then((res) => res.json())
-			.then((data) => setVan(data.vans));
-	}, [id]);
-	console.log(van);
+	const { van } = useOutletContext();
 	if (!van) return <h1>Loading...</h1>;
 	return (
 		<div className="host-van-detail-info">

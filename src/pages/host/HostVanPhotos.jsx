@@ -1,16 +1,12 @@
 import React from "react";
-import { useLocation } from "react-router";
+import { useLocation, useOutletContext } from "react-router";
 
 const HostVanPhotos = () => {
-	const location = useLocation();
-	console.log(location.state);
+	const { van } = useOutletContext();
+
 	return (
 		<div>
-			<img
-				className="host-van-detail-image"
-				src={location.state}
-				alt=""
-			/>
+			<img className="host-van-detail-image" src={van.imageUrl} alt="" />
 		</div>
 	);
 };

@@ -48,7 +48,6 @@ const HostVansDetails = () => {
 					</NavLink>
 					<NavLink
 						to="pricing"
-						state={van.price}
 						style={({ isActive }) =>
 							isActive ? activeStyles : null
 						}
@@ -57,7 +56,6 @@ const HostVansDetails = () => {
 					</NavLink>
 					<NavLink
 						to="photos"
-						state={van.imageUrl}
 						style={({ isActive }) =>
 							isActive ? activeStyles : null
 						}
@@ -65,7 +63,7 @@ const HostVansDetails = () => {
 						Photos
 					</NavLink>
 				</nav>
-				<Outlet />
+				<Outlet context={{ van }} />
 			</div>
 		</section>
 	);
