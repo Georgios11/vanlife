@@ -10,6 +10,8 @@ import Dashboard from "./pages/host/Dashboard";
 import Income from "./pages/host/Income";
 import Reviews from "./pages/host/Reviews";
 import HostLayout from "./components/HostLayout";
+import HostVansDetails from "./pages/host/HostVansDetails";
+import HostVans from "./pages/host/HostVans";
 function App() {
 	return (
 		<BrowserRouter>
@@ -21,6 +23,8 @@ function App() {
 					<Route path="vans/:id" element={<VanDetail />} />
 					<Route path="host" element={<HostLayout />}>
 						<Route index element={<Dashboard />} />
+						<Route path="vans" element={<HostVans />} />
+						<Route path="vans/:id" element={<HostVansDetails />} />
 						<Route path="income" element={<Income />} />
 						<Route path="reviews" element={<Reviews />} />
 					</Route>

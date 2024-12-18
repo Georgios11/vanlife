@@ -19,7 +19,7 @@ const Vans = () => {
 	const vanElements = vans.map((van) => (
 		<div key={van.id} className="van-tile">
 			<Link
-				to={`/vans/${van.id}`}
+				to={`/host/vans/${van.id}`}
 				aria-label={`View details for ${van.name}, 
                              priced at $${van.price} per day`}
 			>

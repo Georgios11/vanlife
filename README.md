@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                 Dashboard ("/host")
+        -                                                                     Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -190,3 +190,90 @@ Fixed with **index property**
   as well!
 
 ## NavLink
+
+## Adding Host Vans Routes
+
+-   Challenge: add the /host/vans and /host/vans/:id routes, as well
+    as the "Vans" link in the Host navbar.
+
+    -   For now, just create the stubbed-out version of the pages (i.e.
+        components that just render an **h1**). Don't worry about adding
+        navigation from /host/vans to /host/vans/:id yet - the link to
+        /host/vans is enough for now.
+
+    -   When deciding whether or not to use nested routes, keep in mind what will/won't be shared between these two pages. See the Figma design file (or the screenshots) to help guide your choice.
+
+## Buildint out the Host Van Detail Page
+
+-   Challenge (not optional!):
+    -   build the shared UI portion of the Host Van Detail page. This is Optional portion: also style it to look like the design.
+    -   For now, get the data from a request to `/api/host/vans/:id` and display the van image, name, price, type
+
+```javascript
+import React from "react";
+import { NavLink, useParams } from "react-router";
+
+const HostVansDetails = () => {
+	const { id } = useParams();
+	console.log(id);
+	const [van, setVan] = React.useState(null);
+
+	React.useEffect(() => {
+		fetch(`/api/host/vans/${id}`)
+			.then((res) => res.json())
+			.then((data) => setVan(data.vans));
+	}, [id]);
+	console.log(van);
+	if (!van) {
+		return <h1>Loading...</h1>;
+	}
+	return (
+		<>
+			<div>
+				<img src={van.imageUrl} width={150} />
+				<h2>{van.name}</h2>
+				<p>{van.price}</p>
+				<p>{van.type}</p>
+			</div>
+			<nav className="host-van-detail-nav">
+				<NavLink>Details</NavLink>
+				<NavLink>Pricing</NavLink>
+				<NavLink>Photos</NavLink>
+			</nav>
+		</>
+	);
+};
+```
+
+## Relative Links
+
+```javascript
+to = ".";
+```
+
+**Sometimes when we want to go back to relative path and NOT relative route**
+
+```javascript
+<Link to=".." relative="path" className="back-button">
+	&larr; <span>Back to all vans</span>
+</Link>
+```
+
+## Add /host/vans/:id Nested Route
+
+-   Challenge: Add the routes necessary so we can access
+    /host/vans/:id/pricing and /host/vans/:id/photos.
+
+    -   Add stubbed-out components in separate files for
+        these routes (e.g. <h2>Pricing view here</h2>). I already
+        made the `HostVanInfo.jsx`, `HostVanPricing.jsx` and
+        `HostVanPhotos.jsx` files for you, but they're empty.
+
+    -   Don't forget: you'll need to use a special tool from
+        React Router so we can keep the top info (and
+        eventually the navbar we build) on the page while going
+        from nested route to nested route. This will require some
+        slight changes to HostVanDetail.jsx
+
+    -   Since we don't have the navbar yet, you can test them
+        by manually navigating to e.g. /host/vans/1/pricing.
