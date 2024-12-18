@@ -4,11 +4,7 @@ import { useLocation, useOutletContext } from "react-router";
 const HostVanPhotos = () => {
 	const { van } = useOutletContext();
 
-	return (
-		<div>
-			<img className="host-van-detail-image" src={van.imageUrl} alt="" />
-		</div>
-	);
+	return <img className="host-van-detail-image" src={van.imageUrl} alt="" />;
 };
 
 export default HostVanPhotos;

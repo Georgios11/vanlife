@@ -5,7 +5,7 @@ const HostVanInfo = () => {
 	const { van } = useOutletContext();
 	if (!van) return <h1>Loading...</h1>;
 	return (
-		<div className="host-van-detail-info">
+		<section className="host-van-detail-info">
 			<h4>
 				Name: <span>{van.name}</span>
 			</h4>
@@ -19,7 +19,7 @@ const HostVanInfo = () => {
 			<h4>
 				Visibility: <span>Public</span>
 			</h4>
-		</div>
+		</section>
 	);
 };
 

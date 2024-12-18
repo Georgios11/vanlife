@@ -4,9 +4,10 @@ import { useLocation, useOutletContext } from "react-router";
 const HostVanPricing = () => {
 	const { van } = useOutletContext();
 	return (
-		<div>
-			<span className="host-van-price">${van.price}.00</span>/day
-		</div>
+		<h3 className="host-van-price">
+			${van.price}
+			<span>/day</span>
+		</h3>
 	);
 };
 
