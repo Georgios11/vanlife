@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                                                                                                                                                                                                                                   Dashboard ("/host")
+        -                                                                                                                                                                                                                                                                                             Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -628,3 +628,30 @@ VanDetail.jsx
 ```
 
 ## 404 Page
+
+### Catch all Route
+
+-   Challenge: Create a 404 page.
+    1.  Create a new component in the pages dir called "NotFound"
+    2.  Add the elements from the design. Style it if you want.
+    3.  Add a "catch-all " route as a nested route under the Route.
+        (It doesn't matter where amongst the children it is.)
+    4.  Use the NotFound component as the element for that catch-all route
+
+```javascript
+import React from "react";
+import { Link } from "react-router";
+
+const NotFound = () => {
+	return (
+		<div className="not-found-container">
+			<h1>Sorry, the page you were looking for was not found</h1>
+			<Link to="/" className="link-button">
+				Return to home
+			</Link>
+		</div>
+	);
+};
+
+export default NotFound;
+```
