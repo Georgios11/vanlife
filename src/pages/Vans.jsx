@@ -7,15 +7,20 @@ const Vans = () => {
 	const typeFilter = searchParams.get("type");
 
 	const [vans, setVans] = useState([]);
-
+	const [isLoading, setIsLoading] = useState(false);
+	const [isError, setIsError] = useState(null);
 	useEffect(() => {
 		const fetchVans = async () => {
+			setIsLoading(true);
 			try {
 				const data = await getVans();
 
 				setVans(data);
 			} catch (error) {
 				console.log(error);
+				setIsError(error);
+			} finally {
+				setIsLoading(false);
 			}
 		};
 		fetchVans();
@@ -44,6 +49,11 @@ const Vans = () => {
 			</Link>
 		</div>
 	));
+	if (isLoading) return <h1 aria-live="polite">Loading...</h1>;
+	if (isError)
+		return (
+			<h1 aria-live="assertive">There was an error {isError.message}</h1>
+		);
 
 	return (
 		<div className="van-list-container">

@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                                                                                                                                                                                                                                                         Dashboard ("/host")
+        -                                                                                                                                                                                                                                                                                                                       Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -656,9 +656,7 @@ const NotFound = () => {
 export default NotFound;
 ```
 
-## Data Layer APIs
-
-### Happy Path vs. Sad Path
+## Happy Path vs. Sad Path
 
 **Create API.js -> fetch logic**
 
@@ -684,3 +682,34 @@ useEffect(() => {
 	fetchVans();
 }, []);
 ```
+
+### Sad Path - Error handling
+
+```javascript
+export async function getVans() {
+	const res = await fetch("/api/vans");
+	if (!res.ok) {
+		throw {
+			message: "Failed to fetch vans",
+			statusText: res.statusText,
+			status: res.status,
+		};
+	}
+	const data = await res.json();
+	return data.vans;
+}
+```
+
+## Accessibility Addition
+
+```javascript
+if (isLoading) return <h1 aria-live="polite">Loading...</h1>;
+if (isError)
+	return <h1 aria-live="assertive">There was an error {isError.message}</h1>;
+```
+
+# Data Layer APIs
+
+## Loaders and Errors
+
+**We change the structure of the app, we have to load Vans.jsx after fetching our data**
