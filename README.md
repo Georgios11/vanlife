@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                                                                                                                                                                                                                                             Dashboard ("/host")
+        -                                                                                                                                                                                                                                                                                                         Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -654,4 +654,33 @@ const NotFound = () => {
 };
 
 export default NotFound;
+```
+
+## Data Layer APIs
+
+### Happy Path vs. Sad Path
+
+**Create API.js -> fetch logic**
+
+```javascript
+export async function getVans() {
+	const res = await fetch("/api/vans");
+	const data = await res.json();
+	return data.vans;
+}
+```
+
+```javascript
+useEffect(() => {
+	const fetchVans = async () => {
+		try {
+			const data = await getVans();
+
+			setVans(data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	fetchVans();
+}, []);
 ```

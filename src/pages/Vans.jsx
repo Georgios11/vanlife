@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";
+import { getVans } from "../API";
 
 const Vans = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -10,10 +11,9 @@ const Vans = () => {
 	useEffect(() => {
 		const fetchVans = async () => {
 			try {
-				const response = await fetch("/api/vans");
-				const data = await response.json();
+				const data = await getVans();
 
-				setVans(data.vans);
+				setVans(data);
 			} catch (error) {
 				console.log(error);
 			}
