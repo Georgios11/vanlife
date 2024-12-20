@@ -14,7 +14,7 @@ It doesn't have a path of it's own. It's purpose is to layout the page
     3. Move the <header> code below to the Header component file.
        (DON'T import that Header component here!)
 
-**We create a Route that is not self-closing and we wrap our routes in it**
+\*We create a Route that is not self-closing and we wrap our routes in it\*\*
 
 ```javascript
 <Routes>
@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                             Dashboard ("/host")
+        -                                                                                                                                                                                                                                                                                   Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -291,3 +291,340 @@ We use the Context
 ```javascript
 const { van } = useOutletContext();
 ```
+
+---
+
+# Search/Query Params and Links
+
+Search/Query Params can represent some kind of change in the UI
+Used for sorting - filtering - pagination
+
+**A single source of truth for certain application state**
+
+-   Should the user be able to revisit or share the page just like it is?
+    If yes, then we might consider **raising that state up** to the URL in a query parameter
+
+-   Query Parameters
+    -   Key/value pairs in the URL
+    -   Begins with ?
+        -   /vans?type=rugged
+    -   Separated by &
+        -   /vans?type=rugged&filteredBy=price
+
+## useSearchParams
+
+[useSearchParams docs ->](https://api.reactrouter.com/v7/functions/react_router.useSearchParams.html)
+
+```javascript
+const [searchParams, setSearchParams] = useSearchParams;
+
+console.log(searchParams);
+URLSearchParams {}
+```
+
+**We get an instance of the browser native URLSearchParams object**
+
+-   It has a whole set of methods that we can use
+    [URLSearchParams methods ->](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
+
+-   Challenge: access the search params in this component 1. Using the hook from react-router-dom, set a variable
+    called `searchParams`
+
+2. Save the value of the `type` parameter (from the `searchParams` object) to a variable called `typeFilter`
+
+3. Log the value of the `typeFilter` to the console
+
+```javascript
+const [searchParams, setSearchParams] = useSearchParams();
+const typeFilter = searchParams.get("type");
+
+console.log(typeFilter);
+```
+
+-   We manually type in the URL bar and see the result
+
+### Filter the array with the search param
+
+-   Challenge:
+
+    -   filter the list of vans based on the `typeFilter` we created earlier. For now, just enter "simple", "luxury", or "rugged" into the search param in the URL to check your work.
+
+````javascript
+    const [searchParams, setSearchParams] = useSearchParams();
+    const typeFilter = searchParams.get("type");
+	const displayedVans = typeFilter
+		? vans.filter((van) => van.type.toLowerCase() === typeFilter)
+		: vans;
+		```
+````
+
+### Using Links to add search params
+
+-   Challenge: add links to filter the vans by type. Use a hard-coded `to` string like we just practiced. The types are "simple", "luxury", and "rugged".
+
+        - add another Link that clears out the search params
+        - For now, give the Links a className of `van-type simple` (and manually replace "simple" with "luxury" and "rugged" for the Links that filter by those types.)
+
+        - Include a Link to clear the filters. Its className should be `van-type clear-filters`
+
+```javascript
+return (
+	<div className="van-list-container">
+		<h1>Explore our van options</h1>
+		<div className="van-list-filter-buttons">
+			<Link className="van-type luxury" to="?type=luxury">
+				Luxury
+			</Link>
+			<Link className="van-type simple" to="?type=simple">
+				Simple
+			</Link>
+			<Link className="van-type rugged" to="?type=rugged">
+				Rugged
+			</Link>
+			<Link className="van-type clear-filters" to=".">
+				Clear filters
+			</Link>
+		</div>
+		<div className="van-list">{vanElements}</div>
+	</div>
+);
+```
+
+## Using setSearchParams setter function
+
+-   Challenge: change the Links to buttons and use the setSearchParams function to set the search params when the buttons are clicked. Keep all the classNames the same.
+
+```javascript
+return (
+	<div className="van-list-container">
+		<h1>Explore our van options</h1>
+		<div className="van-list-filter-buttons">
+			<button
+				onClick={() => {
+					setSearchParams({ type: "luxury" });
+				}}
+			>
+				Luxury
+			</button>
+			<button
+				onClick={() => {
+					setSearchParams({ type: "rugged" });
+				}}
+			>
+				Rugged
+			</button>
+			<button
+				onClick={() => {
+					setSearchParams({ type: "simple" });
+				}}
+			>
+				Simple
+			</button>
+			<button
+				onClick={() => {
+					setSearchParams({});
+				}}
+			>
+				Clear filters
+			</button>
+		</div>
+		<div className="van-list">{vanElements}</div>
+	</div>
+);
+```
+
+## Caveats to setting params
+
+### Merging search params with Links
+
+[LOOK INTO THIS ->](https://scrimba.com/learn-react-router-6-c06/~01o)
+
+```javascript
+const displayedCharacters = typeFilter
+	? swCharacters.filter((char) => char.type.toLowerCase() === typeFilter)
+	: swCharacters;
+
+const charEls = displayedCharacters.map((char) => (
+	<div key={char.name}>
+		<h3
+			style={{
+				color: char.type.toLowerCase() === "jedi" ? "blue" : "red",
+			}}
+		>
+			Name: {char.name}
+		</h3>
+		<p>Type: {char.type}</p>
+		<hr />
+	</div>
+));
+
+function genNewSearchParamString(key, value) {
+	const sp = new URLSearchParams(searchParams);
+	if (value === null) {
+		sp.delete(key);
+	} else {
+		sp.set(key, value);
+	}
+	return `?${sp.toString()}`;
+}
+
+function handleFilterChange(key, value) {
+	setSearchParams((prevParams) => {
+		if (value === null) {
+			prevParams.delete(key);
+		} else {
+			prevParams.set(key, value);
+		}
+		return prevParams;
+	});
+}
+
+return (
+	<main>
+		<h2>Home</h2>
+		<div>
+			<Link to={genNewSearchParamString("type", "jedi")}>Jedi</Link>
+			<Link to={genNewSearchParamString("type", "sith")}>Sith</Link>
+			<Link to={genNewSearchParamString("type", null)}>Clear</Link>
+		</div>
+		<div>
+			<button onClick={() => handleFilterChange("type", "jedi")}>
+				Jedi
+			</button>
+			<button onClick={() => handleFilterChange("type", "sith")}>
+				Sith
+			</button>
+			<button onClick={() => handleFilterChange("type", null)}>
+				Clear
+			</button>
+		</div>
+		<hr />
+		{charEls}
+	</main>
+);
+```
+
+-   Challenges:
+
+    1.  Conditionally render the "Clear filter" button only if there's a `type` filter currently applied in the search params
+
+    2.  On just the 3 filter buttons (not the Clear filter button),conditionally render the className "selected" if the typeFilter value equals the value that button sets it to. (We don't have a variable for that, so it'll be a hard-coded string).
+
+```javascript
+{
+	typeFilter ? (
+		<button
+			onClick={() => {
+				setSearchParams({});
+			}}
+		>
+			Clear filters
+		</button>
+	) : null;
+}
+```
+
+```javascript
+<div className="van-list-filter-buttons">
+	<button
+		className={`van-type luxury ${
+			typeFilter === "luxury" ? "selected" : ""
+		}`}
+		onClick={() => {
+			setSearchParams({ type: "luxury" });
+		}}
+	>
+		Luxury
+	</button>
+	<button
+		className={`van-type rugged ${
+			typeFilter === "rugged" ? "selected" : ""
+		}`}
+		onClick={() => {
+			setSearchParams({ type: "rugged" });
+		}}
+	>
+		Rugged
+	</button>
+	<button
+		className={`van-type simple ${
+			typeFilter === "simple" ? "selected" : ""
+		}`}
+		onClick={() => {
+			setSearchParams({ type: "simple" });
+		}}
+	>
+		Simple
+	</button>
+	{typeFilter ? (
+		<button
+			className="van-type clear-filters"
+			onClick={() => {
+				setSearchParams({});
+			}}
+		>
+			Clear filters
+		</button>
+	) : null}
+</div>
+```
+
+## Fix remaining absolute paths
+
+## Search Params and Links
+
+When we click "back to all vans" we loose our filters. NOT GOOD
+
+### History state
+
+#### useLocation
+
+-   Add state to Link
+
+```javascript
+	const [searchParams, setSearchParams] = useSearchParams();
+	const typeFilter = searchParams.get("type");
+	...
+		<Link to={`${van.id}`} 	state={{ search: `?${searchParams.toString()}` }}>
+```
+
+-   Challenge: modify the Link `to` prop below to send the user back to the previous page with the searchParams included, if they exist. (Remember we may not have anything in that state if there were no filters applied before coming to this van detail page, so make sure to "code defensively" to handle that case.)
+
+```javascript
+const search = location.state?.search || "";
+
+<Link to={`..${search}`} relative="path" className="back-button">
+	&larr; <span>Back to all vans</span>
+</Link>;
+```
+
+-   Challenge: When a filter is applied, change the text of the button to say "Back to luxury vans" (e.g.) instead of "Back to all vans". As usual, there's more than one way to solve this, so just give it your best shot
+
+**We create an new instance of URLSearchParams and then we have access to methods like .get()**
+
+**OR**
+In Vans.jsx we pass the filterType in Link state
+
+```javascript
+		<Link
+				to={`${van.id}`}
+				state={{
+					search: `?${searchParams.toString()}`,
+					type: typeFilter,
+				}}
+			>
+```
+
+VanDetail.jsx
+
+```javascript
+	const type = location.state?.type || "all";
+
+	return (
+		<div className="van-detail-container">
+			<Link to={`..${search}`} relative="path" className="back-button">
+				&larr; <span>Back to {type} vans</span>
+			</Link>
+```
+
+## 404 Page
