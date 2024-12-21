@@ -1,30 +1,18 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router";
+import { Link, useSearchParams, useLoaderData } from "react-router-dom";
 import { getVans } from "../API";
 
+export async function loader() {
+	return getVans();
+}
 const Vans = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const typeFilter = searchParams.get("type");
 
-	const [vans, setVans] = useState([]);
-	const [isLoading, setIsLoading] = useState(false);
 	const [isError, setIsError] = useState(null);
-	useEffect(() => {
-		const fetchVans = async () => {
-			setIsLoading(true);
-			try {
-				const data = await getVans();
+	const vans = useLoaderData();
 
-				setVans(data);
-			} catch (error) {
-				console.log(error);
-				setIsError(error);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-		fetchVans();
-	}, []);
 	const displayedVans = typeFilter
 		? vans.filter((van) => van.type.toLowerCase() === typeFilter)
 		: vans;
@@ -49,7 +37,7 @@ const Vans = () => {
 			</Link>
 		</div>
 	));
-	if (isLoading) return <h1 aria-live="polite">Loading...</h1>;
+
 	if (isError)
 		return (
 			<h1 aria-live="assertive">There was an error {isError.message}</h1>

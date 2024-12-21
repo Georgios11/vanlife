@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                                                                                                                                                                                                                                                                       Dashboard ("/host")
+        -                                                                                                                                                                                                                                                                                                                                                                                                                                     Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -713,3 +713,141 @@ if (isError)
 ## Loaders and Errors
 
 **We change the structure of the app, we have to load Vans.jsx after fetching our data**
+
+## Opt in to Data Layer APIs
+
+[Choose a Router ->](https://medium.com/front-end-weekly/choosing-a-router-in-react-apps-85ae72fe9d78)
+
+```javascript
+import {
+	createBrowserRouter,
+	createRoutesFromElements,
+	RouterProvider,
+
+	 const router = createBrowserRouter(createRoutesFromElements());
+
+```
+
+-   **Challenge: Change our router to a newer one that supports the data APIs!**
+
+    1.  You'll need to import: RouterProvider, createBrowserRouter, and createRoutesFromElements
+    2.  Create a `router` variable and use the functions you just imported to create a new browserRouter
+    3.  Pass that router variable to the `router` prop on <RouterProvider />. It should end up being the only thing the App component renders.
+
+```javascript
+const router = createBrowserRouter(
+	createRoutesFromElements(
+		<Route path="/" element={<Layout />}>
+			<Route index element={<Home />} />
+			<Route path="about" element={<About />} />
+			<Route path="vans" element={<Vans />} />
+			<Route path="vans/:id" element={<VanDetail />} />
+
+			<Route path="host" element={<HostLayout />}>
+				<Route index element={<Dashboard />} />
+				<Route path="income" element={<Income />} />
+				<Route path="reviews" element={<Reviews />} />
+				<Route path="vans" element={<HostVans />} />
+				<Route path="vans/:id" element={<HostVansDetails />}>
+					<Route index element={<HostVanInfo />} />
+					<Route path="pricing" element={<HostVanPricing />} />
+					<Route path="photos" element={<HostVanPhotos />} />
+				</Route>
+			</Route>
+			<Route path="*" element={<NotFound />} />
+		</Route>,
+	),
+);
+
+function App() {
+	return <RouterProvider router={router} />;
+}
+```
+
+## Loaders
+
+1. Export a **loader** function from the page that fetches the data the page will need
+2. Pass a **loader** prop to the Route that renders that page and pass in the **loader** function
+
+-   Challenge:
+
+    1.  Export a loader function from this file. Have that loader function simply return the string "Vans data goes here"
+
+    2.  Import that function in the index.jsx file, and set it as the value for the`loader` prop on the Route that controls this page.
+
+```javascript
+export function loader() {
+	return "Vans data goes here";
+}
+```
+
+```javascript
+import Vans, { loader as vansLoader } from "./pages/Vans";
+
+<Route path="vans" element={<Vans />} loader={vansLoader} />;
+```
+
+### useLoaderData
+
+**\*React Router is making changes NOT to how the fetch occurs but WHEN the fetch occurs**
+
+## Use loader data instead of useEffect
+
+-   Challenge: Use the vans data that came in from useLoaderData instead of the state and useEffect
+
+    1.  Comment out the entire useEffect block
+    2.  Make whatever other changes you need so it all works again
+
+```javascript
+const vans = useLoaderData();
+// const [vans, setVans] = useState([]);
+
+// setVans(data);
+// useEffect(() => {
+// 	const fetchVans = async () => {
+// 		setIsLoading(true);
+// 		try {
+// 			const data = await getVans();
+
+// 			setVans(data);
+// 		} catch (error) {
+// 			console.log(error);
+// 			setIsError(error);
+// 		} finally {
+// 			setIsLoading(false);
+// 		}
+// 	};
+// 	fetchVans();
+// }, []);
+```
+
+### Delete redundant code
+
+-   We do not need isLoading any more. We see the page after the data arrive
+-   We do not need state
+
+## Loaders Quiz
+
+1. When does the code in a loader function run?
+
+Before the route change happens and the component for that route loads
+
+2. What are some benefits of using a data loader function instead of fetching our data in a useEffect in a component?
+
+    - Don't need to worry about handling loading state in the component
+    - Don't need to have lengthy/confusing useEffect code in our component
+    - Don't need to handle error state in the component
+
+3. What change do we need to make to our BrowserRouter before we can use loaders (or any of the new data-layer API features) in our app?
+
+Get rid of the BrowserRouter component and use createBrowserRouter() instead. Can use createRoutesFromElements() to make the transition a bit easier
+
+4. What are the steps we need to take in order to use a loader on any given route?
+
+    1. Define and export a loader function
+    2. Import the loader and pass it to the route we're wanting
+       to fetch data for
+    3. Use the useLoaderData() hook to get the data from the loader
+       function.
+
+## Handling Errors
