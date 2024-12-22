@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                           Dashboard ("/host")
+        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -927,3 +927,37 @@ export default Error;
 ```
 
 # Actions and Protected Routes
+
+## Protected Routes Quiz
+
+1. How did we change our route definitions in order to
+   "protect" certain routes from an un-logged-in user?
+
+Wrapped the routes we wanted to protect in a Layout route
+that contains logic to redirect someone if they're not logged
+in
+
+2. What component can we use to automatically send someone
+   to a different route in our app?
+
+**Navigate to="/login"**
+
+3. What component can we render if the user IS logged in?
+
+**Outlet**
+
+## Protected routes with Loaders
+
+**If we use a Loader to fetch data, the fetching begins before the route transition and the target component renders to the page**
+
+-   That way we do not need to keep track of a loading state
+-   We check for error state in a more declarative way in our Route definitions
+
+**This way we avoid the waterfall and all of our fetch requests are run in parallel. All of the loaders for all nested routes will run as soon as we start the transition to that route, so we need a slightly different approach**
+
+-   Approach:
+    -   If the user isn't logged in, redirect to login page when protected route loaders run, before any route rendering happens
+
+**Current downside:** It has to happen in every protected route's loader
+
+-   Challenge: Add a loader to every host route. For now, just have them `return null` (don't worry about checking for authentication yet)
