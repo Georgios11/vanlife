@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                                                                                                                                                                                                                                                                                                                                                                                     Dashboard ("/host")
+        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -851,3 +851,77 @@ Get rid of the BrowserRouter component and use createBrowserRouter() instead. Ca
        function.
 
 ## Handling Errors
+
+-   We provide errorElement prop on Route
+
+-   Challenge: Add an errorElement to the vans Route.
+
+    1.  This time, instead of just putting in an <h1> directly, you should make a new Error.jsx component in the components folder. (We'll learn something new bout this soon). For now, that new component can just render the <h1>An error occurred!</h1>
+    2.  Import and use that new Error component as the errorElement
+        on the /vans route.
+
+```javascript
+import React from "react";
+
+const Error = () => {
+	return <h1>An error occurred</h1>;
+};
+
+export default Error;
+```
+
+```javascript
+<Route
+	path="vans"
+	element={<Vans />}
+	loader={vansLoader}
+	errorElement={<Error />}
+/>
+```
+
+### We throw an Error in our mock server
+
+```javascript
+this.get("/vans", (schema, request) => {
+	return new Response(400, {}, { error: "Error fetching data" });
+	// return schema.vans.all();
+});
+```
+
+## useRouteError
+
+```javascript
+import React from "react";
+import { useRouteError } from "react-router-dom";
+
+const Error = () => {
+	const error = useRouteError();
+	console.log(error);
+	return <h1>An error occurred</h1>;
+};
+
+export default Error;
+```
+
+-   Challenge: use the error object to display a more helpful
+    error message below
+
+```javascript
+import React from "react";
+import { useRouteError } from "react-router-dom";
+
+const Error = () => {
+	const error = useRouteError();
+	// console.log(error);
+	return (
+		<>
+			<h1>Error:</h1>
+			<h3>
+				{error.status} {error.message}
+			</h3>
+		</>
+	);
+};
+
+export default Error;
+```
