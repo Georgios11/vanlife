@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Dashboard ("/host")
+        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                           Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -925,3 +925,5 @@ const Error = () => {
 
 export default Error;
 ```
+
+# Actions and Protected Routes

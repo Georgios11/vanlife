@@ -24,12 +24,14 @@ import HostVanPhotos from "./pages/host/HostVanPhotos";
 import HostVanInfo from "./pages/host/HostVanInfo";
 import NotFound from "./pages/NotFound";
 import Error from "./pages/Error";
+import Login from "./pages/Login";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route path="/" element={<Layout />}>
 			<Route index element={<Home />} />
 			<Route path="about" element={<About />} />
+			<Route path="login" element={<Login />} />
 			<Route
 				path="vans"
 				element={<Vans />}
