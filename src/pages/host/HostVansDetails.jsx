@@ -1,20 +1,18 @@
 import React from "react";
-import { Link, NavLink, Outlet, useParams } from "react-router";
-
+import { Link, NavLink, Outlet, useLoaderData, useParams } from "react-router";
+import { getHostVans } from "../../API";
+export function loader({ params }) {
+	return getHostVans(params.id);
+}
 const HostVansDetails = () => {
 	const { id } = useParams();
 
-	const [van, setVan] = React.useState(null);
+	const van = useLoaderData();
 	const activeStyles = {
 		fontWeight: "bold",
 		textDecoration: "underline",
 		color: "#161616",
 	};
-	React.useEffect(() => {
-		fetch(`/api/host/vans/${id}`)
-			.then((res) => res.json())
-			.then((data) => setVan(data.vans));
-	}, [id]);
 
 	if (!van) {
 		return <h1>Loading...</h1>;
