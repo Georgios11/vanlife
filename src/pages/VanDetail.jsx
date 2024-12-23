@@ -1,23 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router";
-
+import { Link, useLoaderData, useLocation, useParams } from "react-router";
+import { getVans } from "../API";
+export function loader({ params }) {
+	return getVans(params.id);
+}
 const VanDetail = () => {
 	const { id } = useParams();
-	const [van, setVan] = useState(null);
+
 	const location = useLocation();
-	console.log(location.state.search);
-	useEffect(() => {
-		const getVan = async () => {
-			try {
-				const response = await fetch(`/api/vans/${id}`);
-				const data = await response.json();
-				setVan(data.vans);
-			} catch (error) {
-				console.log(error);
-			}
-		};
-		getVan();
-	}, [id]);
+
+	const van = useLoaderData();
+
 	const search = location.state?.search || "";
 	const type = location.state?.type || "all";
 
