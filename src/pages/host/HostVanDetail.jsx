@@ -1,10 +1,13 @@
 import React from "react";
 import { Link, NavLink, Outlet, useLoaderData, useParams } from "react-router";
 import { getHostVans } from "../../API";
-export function loader({ params }) {
+import { requireAuth } from "../../utils";
+
+export async function loader({ params }) {
+	await requireAuth();
 	return getHostVans(params.id);
 }
-const HostVansDetails = () => {
+const HostVanDetail = () => {
 	const { id } = useParams();
 
 	const van = useLoaderData();
@@ -67,4 +70,4 @@ const HostVansDetails = () => {
 	);
 };
 
-export default HostVansDetails;
+export default HostVanDetail;

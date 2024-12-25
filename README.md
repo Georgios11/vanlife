@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     Dashboard ("/host")
+        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -964,3 +964,46 @@ in
 
 -   Challenge:
     -   Include the `await requireAuth()` everywhere it's needed!
+
+**We add the loader to all routes except /host/vans and /host/vans/:id. These routes already have their loaders. We go to the components and convert their loaders to async functions, and call requireAuth from there**
+
+```javascript
+export async function loader() {
+	await requireAuth();
+	return getHostVans();
+}
+```
+
+```javascript
+export async function loader({ params }) {
+	await requireAuth();
+	return getHostVans(params.id);
+}
+```
+
+### Fixed with Guard Function for Elements
+
+```javascript
+import { Navigate } from "react-router-dom";
+
+function RequireAuth({ children }) {
+	const isLoggedIn = false; // Replace with actual logic
+
+	if (!isLoggedIn) {
+		return <Navigate to="/login" />;
+	}
+
+	return children;
+}
+```
+
+```javascript
+<Route
+    path="host"
+    element={
+        <RequireAuth>
+            <HostLayout />
+        </RequireAuth>
+    }
+>
+```
