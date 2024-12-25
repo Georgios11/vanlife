@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Dashboard ("/host")
+        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -961,3 +961,6 @@ in
 **Current downside:** It has to happen in every protected route's loader
 
 -   Challenge: Add a loader to every host route. For now, just have them `return null` (don't worry about checking for authentication yet)
+
+-   Challenge:
+    -   Include the `await requireAuth()` everywhere it's needed!

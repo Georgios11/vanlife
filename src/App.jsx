@@ -28,7 +28,7 @@ import HostVanInfo from "./pages/host/HostVanInfo";
 import NotFound from "./pages/NotFound";
 import Error from "./pages/Error";
 import Login from "./pages/Login";
-
+import { requireAuth } from "./utils";
 const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route path="/" element={<Layout />}>
@@ -51,9 +51,7 @@ const router = createBrowserRouter(
 				<Route
 					index
 					element={<Dashboard />}
-					loader={async () => {
-						return null;
-					}}
+					loader={async () => await requireAuth()}
 				/>
 				<Route
 					path="income"
