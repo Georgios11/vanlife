@@ -6,7 +6,7 @@ export async function requireAuth() {
 
 	if (!isLoggedIn) {
 		console.log("User not authenticated. Redirecting to /login");
-		return redirect("/login");
+		throw redirect("/login");
 	}
 
 	console.log("User authenticated");

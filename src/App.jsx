@@ -30,7 +30,6 @@ import "./server";
 import HostVanDetail, {
 	loader as hostVanDetailLoader,
 } from "./pages/host/HostVanDetail";
-import RequireAuth from "./components/RequireAuth";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -54,14 +53,7 @@ const router = createBrowserRouter(
 			 * Include the `await requireAuth()` everywhere it's needed!
 			 */}
 
-			<Route
-				path="host"
-				element={
-					<RequireAuth>
-						<HostLayout />
-					</RequireAuth>
-				}
-			>
+			<Route path="host" element={<HostLayout />}>
 				<Route
 					index
 					element={<Dashboard />}
@@ -72,36 +64,43 @@ const router = createBrowserRouter(
 					path="income"
 					element={<Income />}
 					loader={async () => await requireAuth()}
+					errorElement={<Error />}
 				/>
 				<Route
 					path="reviews"
 					element={<Reviews />}
 					loader={async () => await requireAuth()}
+					errorElement={<Error />}
 				/>
 				<Route
 					path="vans"
 					element={<HostVans />}
 					loader={hostVansLoader}
+					errorElement={<Error />}
 				/>
 				<Route
 					path="vans/:id"
 					element={<HostVanDetail />}
 					loader={hostVanDetailLoader}
+					errorElement={<Error />}
 				>
 					<Route
 						index
 						element={<HostVanInfo />}
 						loader={async () => await requireAuth()}
+						errorElement={<Error />}
 					/>
 					<Route
 						path="pricing"
 						element={<HostVanPricing />}
 						loader={async () => await requireAuth()}
+						errorElement={<Error />}
 					/>
 					<Route
 						path="photos"
 						element={<HostVanPhotos />}
 						loader={async () => await requireAuth()}
+						errorElement={<Error />}
 					/>
 				</Route>
 			</Route>
