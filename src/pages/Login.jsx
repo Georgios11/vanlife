@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import { useLoaderData, useSearchParams } from "react-router-dom";
+import { loginUser } from "../API";
 
 export function loader({ request }) {
 	return new URL(request.url).searchParams.get("message");
@@ -13,9 +14,14 @@ export default function Login() {
 		password: "",
 	});
 
-	function handleSubmit(e) {
+	async function handleSubmit(e) {
 		e.preventDefault();
-		console.log(loginFormData);
+		try {
+			const response = await loginUser(loginFormData);
+			console.log(response);
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	function handleChange(e) {

@@ -77,7 +77,7 @@ createServer({
 			id: "123",
 			email: "user@email.com",
 			password: "123",
-			name: "Bob",
+			name: "User",
 		});
 	},
 

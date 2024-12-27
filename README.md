@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             Dashboard ("/host")
+        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -1055,3 +1055,15 @@ const message = useLoaderData();
    a .then(data => {...}) to access the data, or use
    a separate aync function defined inside handleSubmit
 3. TBA
+
+```javascript
+async function handleSubmit(e) {
+	e.preventDefault();
+	try {
+		const response = await loginUser(loginFormData);
+		console.log(response);
+	} catch (error) {
+		console.log(error);
+	}
+}
+```
