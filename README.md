@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 Dashboard ("/host")
+        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -1099,6 +1099,7 @@ const [error, setError] = useState(null);
 async function handleSubmit(e) {
 	e.preventDefault();
 	try {
+		setError(null);
 		setStatus("submitting");
 		const response = await loginUser(loginFormData);
 		console.log(response);

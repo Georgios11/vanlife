@@ -18,6 +18,7 @@ export default function Login() {
 	async function handleSubmit(e) {
 		e.preventDefault();
 		try {
+			setError(null);
 			setStatus("submitting");
 			const response = await loginUser(loginFormData);
 			console.log(response);
@@ -40,7 +41,7 @@ export default function Login() {
 		<div className="login-container">
 			<h1>Sign in to your account</h1>
 			{message && <h3 className="red">{message}</h3>}
-			{error && <h3>{error}</h3>}
+			{error && <h3 className="red">{error}</h3>}
 			<form onSubmit={handleSubmit} className="login-form">
 				<input
 					name="email"
@@ -56,7 +57,9 @@ export default function Login() {
 					placeholder="Password"
 					value={loginFormData.password}
 				/>
-				<button disabled={status === "submitting"}>Log in</button>
+				<button disabled={status === "submitting"}>
+					{status === "submitting" ? "Loging in..." : "Log in"}
+				</button>
 			</form>
 		</div>
 	);
