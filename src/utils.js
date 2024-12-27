@@ -4,6 +4,6 @@ export async function requireAuth() {
 	const isLoggedIn = localStorage.getItem("isLoggedIn");
 
 	if (!isLoggedIn) {
-		throw redirect("/login?message= you must login first");
+		throw redirect(`/login?message= you must login first`);
 	}
 }

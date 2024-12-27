@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           Dashboard ("/host")
+        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -1255,7 +1255,7 @@ export async function action({ request }) {
 
 ## Submitting and error state with useNavigation
 
-[**useNavication docs ->**](https://api.reactrouter.com/v7/functions/react_router.useNavigation.html)
+[**useNavigation docs ->**](https://api.reactrouter.com/v7/functions/react_router.useNavigation.html)
 
 -   useNavigation gives us an object that gives information about the current status of navigation in our app e.g a loader is loading
 
@@ -1281,7 +1281,7 @@ const navigation = useNavigation();
 ```
 
 -   Challenge: Remove error handling from the component state
-    and and a try...catch to the action to better handle the
+    and add a try...catch to the action to better handle the
     errors, just like we just practiced.
 
 ```javascript
@@ -1300,3 +1300,15 @@ export async function action({ request }) {
 	}
 }
 ```
+
+## Get previous route pathname
+
+## redirectTo - part1
+
+## redirectTo - part2
+
+-   Challenge: Implement the `redirectTo` feature we just learned about to VanLife!
+
+1. Pass the request to all calls to `requireAuth` (this includes all inline loaders on /host routes as well as the loaders defined separately inside the component files of /host routes)
+2. Receive the request in requireAuth and pass along a search param of `redirectTo`
+3. You're on your own for the last part :) You can do it! 💪
