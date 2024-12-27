@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
-import { useLoaderData, useSearchParams } from "react-router-dom";
+import { useLoaderData, useNavigate, useSearchParams } from "react-router-dom";
 import { loginUser } from "../API";
 
 export function loader({ request }) {
@@ -8,7 +8,7 @@ export function loader({ request }) {
 }
 export default function Login() {
 	const message = useLoaderData();
-
+	const navigate = useNavigate();
 	const [loginFormData, setLoginFormData] = useState({
 		email: "",
 		password: "",
@@ -22,6 +22,7 @@ export default function Login() {
 			setStatus("submitting");
 			const response = await loginUser(loginFormData);
 			console.log(response);
+			navigate("/host", { replace: true });
 		} catch (error) {
 			setError(error.message);
 		} finally {
