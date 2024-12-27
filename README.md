@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Dashboard ("/host")
+        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -1147,4 +1147,75 @@ import Login, {
 //////////
 
 
+```
+
+[**Form Data Documentation ->**](https://developer.mozilla.org/en-US/docs/Web/API/FormData)
+
+## Action function - Params
+
+-   Params is referring to route parameters
+
+## Action function - Request
+
+-   Request object contains form data
+
+```javascript
+export async function action({ request }) {
+	const formData = await request.formData();
+	const email = formData.get("email");
+	const password = formData.get("password");
+	// process this info however I wanted
+	// pass the email and password to the loginUser function
+	console.log(email, password);
+	return null;
+}
+```
+
+-   Challenge: save the logged in state to localStorage
+
+1. When the user logs in, save a key called "loggedin" to localStorage, and set it to `true`.
+2. In requireAuth, check if the value of "loggedin" in localStorage is `true` instead of hardcoding it like it is currently
+
+```javascript
+export async function action({ request }) {
+	const formData = await request.formData();
+	const email = formData.get("email");
+	const password = formData.get("password");
+	// process this info however I wanted
+	// pass the email and password to the loginUser function
+
+	const data = await loginUser({ email, password });
+	if (data) localStorage.setItem("isLoggedIn", true);
+	console.log(data);
+
+	return null;
+}
+////
+
+import { redirect } from "react-router-dom";
+
+export async function requireAuth() {
+	const isLoggedIn = localStorage.getItem("isLoggedIn");
+
+	if (!isLoggedIn) {
+		throw redirect("/login?message= you must login first");
+	}
+}
+```
+
+-   Challenge: figure out how to send the user to the /host route after they successfully log in
+
+```javascript
+export async function action({ request }) {
+	const formData = await request.formData();
+	const email = formData.get("email");
+	const password = formData.get("password");
+	const data = await loginUser({ email, password });
+
+	if (data) {
+		localStorage.setItem("isLoggedIn", true);
+		throw redirect("/host");
+	}
+	return null;
+}
 ```

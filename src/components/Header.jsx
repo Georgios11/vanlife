@@ -15,6 +15,9 @@ export default function Header() {
 				<Link to="login" className="login-link">
 					<img src={imageUrl} className="login-icon" alt="login" />
 				</Link>
+				<button onClick={() => localStorage.removeItem("isLoggedIn")}>
+					Log out
+				</button>
 			</nav>
 		</header>
 	);
