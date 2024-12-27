@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Dashboard ("/host")
+        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -1251,4 +1251,31 @@ export async function action({ request }) {
 		return err;
 	}
 }
+```
+
+## Submitting and error state with useNavigation
+
+[**useNavication docs ->**](https://api.reactrouter.com/v7/functions/react_router.useNavigation.html)
+
+-   useNavigation gives us an object that gives information about the current status of navigation in our app e.g a loader is loading
+
+```javascript
+{state: 'idle', location: undefined, formMethod: undefined, formAction: undefined, formEncType: undefined, …}
+formAction: undefined
+formData: undefined
+formEncType: undefined
+formMethod: undefined
+location: undefined
+state: "idle"
+[[Prototype]]
+:
+Object
+```
+
+```javascript
+const navigation = useNavigation();
+
+<button disabled={navigation.state === "submitting"}>
+	{navigation.state === "submitting" ? "Loging in..." : "Log in"}
+</button>;
 ```

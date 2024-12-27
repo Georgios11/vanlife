@@ -6,6 +6,7 @@ import {
 	useActionData,
 	useLoaderData,
 	useNavigate,
+	useNavigation,
 } from "react-router-dom";
 import { loginUser } from "../API";
 
@@ -32,31 +33,21 @@ export default function Login() {
 	const message = useLoaderData();
 	const navigate = useNavigate();
 	const errorMessage = useActionData();
-	const [status, setStatus] = useState("idle");
-
-	async function handleSubmit(e) {
-		e.preventDefault();
-		try {
-			setStatus("submitting");
-
-			navigate("/host", { replace: true });
-		} catch (error) {
-			console.log(error);
-		} finally {
-			setStatus("idle");
-		}
-	}
+	const navigation = useNavigation();
+	console.log(navigation.state);
 
 	return (
 		<div className="login-container">
 			<h1>Sign in to your account</h1>
 			{message && <h3 className="red">{message}</h3>}
 			{errorMessage && <h3 className="red">{errorMessage}</h3>}
-			<Form method="post" className="login-form" replace>
+			<Form method="post" className="login-form" replace={true}>
 				<input name="email" type="email" placeholder="Email address" />
 				<input name="password" type="password" placeholder="Password" />
-				<button disabled={status === "submitting"}>
-					{status === "submitting" ? "Loging in..." : "Log in"}
+				<button disabled={navigation.state === "submitting"}>
+					{navigation.state === "submitting"
+						? "Loging in..."
+						: "Log in"}
 				</button>
 			</Form>
 		</div>
