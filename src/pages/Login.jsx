@@ -31,10 +31,9 @@ export async function action({ request }) {
 
 export default function Login() {
 	const message = useLoaderData();
-	const navigate = useNavigate();
+
 	const errorMessage = useActionData();
 	const navigation = useNavigation();
-	console.log(navigation.state);
 
 	return (
 		<div className="login-container">

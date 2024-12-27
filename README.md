@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       Dashboard ("/host")
+        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -1278,4 +1278,25 @@ const navigation = useNavigation();
 <button disabled={navigation.state === "submitting"}>
 	{navigation.state === "submitting" ? "Loging in..." : "Log in"}
 </button>;
+```
+
+-   Challenge: Remove error handling from the component state
+    and and a try...catch to the action to better handle the
+    errors, just like we just practiced.
+
+```javascript
+export async function action({ request }) {
+	const formData = await request.formData();
+	const email = formData.get("email");
+	const password = formData.get("password");
+	let err = null;
+	try {
+		await loginUser({ email, password });
+		localStorage.setItem("isLoggedIn", true);
+		return redirect("/host");
+	} catch (error) {
+		err = error.message;
+		return err;
+	}
+}
 ```
