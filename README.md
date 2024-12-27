@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       Dashboard ("/host")
+        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -1114,3 +1114,16 @@ async function handleSubmit(e) {
 	error && <h3>{error}</h3>;
 }
 ```
+
+# React Router Form Component
+
+Import Form component from React instead of native HTML form
+
+## Setting up the Action Function
+
+-   Challenge: Start implementing actions to handle our form data
+
+1. Replace <form> with <Form> from React Router
+2. Add a `method` prop to the <Form>.
+3. Create an action function in this file. It should just log "Action function" to the console and `return null` for now.
+4. Register the action function on the <Route>

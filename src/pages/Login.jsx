@@ -1,6 +1,11 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
-import { useLoaderData, useNavigate, useSearchParams } from "react-router-dom";
+import {
+	Form,
+	useLoaderData,
+	useNavigate,
+	useSearchParams,
+} from "react-router-dom";
 import { loginUser } from "../API";
 
 export function loader({ request }) {
@@ -21,7 +26,7 @@ export default function Login() {
 			setError(null);
 			setStatus("submitting");
 			const response = await loginUser(loginFormData);
-			console.log(response);
+
 			navigate("/host", { replace: true });
 		} catch (error) {
 			setError(error.message);
@@ -43,7 +48,7 @@ export default function Login() {
 			<h1>Sign in to your account</h1>
 			{message && <h3 className="red">{message}</h3>}
 			{error && <h3 className="red">{error}</h3>}
-			<form onSubmit={handleSubmit} className="login-form">
+			<Form onSubmit={handleSubmit} className="login-form">
 				<input
 					name="email"
 					onChange={handleChange}
@@ -61,7 +66,7 @@ export default function Login() {
 				<button disabled={status === "submitting"}>
 					{status === "submitting" ? "Loging in..." : "Log in"}
 				</button>
-			</form>
+			</Form>
 		</div>
 	);
 }
