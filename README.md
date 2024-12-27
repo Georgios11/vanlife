@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             Dashboard ("/host")
+        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -984,3 +984,74 @@ export async function loader({ params }) {
 ```javascript
 
 ```
+
+## Send login message prompt to login page
+
+```javascript
+import { redirect } from "react-router-dom";
+
+export async function requireAuth() {
+	const isLoggedIn = false;
+
+	if (!isLoggedIn) {
+		throw redirect("/login?message= you must login first");
+	}
+}
+```
+
+## Consume message from search param on login page
+
+-   Think:
+    How should we grab the search param from the url on the login page
+    in order to display the message (if it exists)?
+-   Solution 1:
+    We use the native web searchParams object which has a method get()
+
+```javascript
+const [searchParams, setSearchParams] = useSearchParams();
+console.log(searchParams.get("message"));
+```
+
+-   Solution 2:
+    **Now that we are using the data router we can use those APIs that we get with the data router -> loader**
+
+**The loader has access to the REQUEST OBJECT -> native web request object**
+
+```javascript
+export function loader({ request }) {
+	return new URL(request.url).searchParams.get("message");
+}
+```
+
+```javascript
+export default function Login() {
+	const message = useLoaderData();
+	console.log(message);
+```
+
+-   Challenge:
+    Grab the message being returned from the loader and display it on the Login page (anywhere) as an h2
+
+```javascript
+const message = useLoaderData();
+{
+	message && <h2>{message}</h2>;
+}
+<h1>Sign in to your account</h1>;
+```
+
+-   Challenge:
+    Pass a message from the requireAuth function that says "You must log in first." and display that message in an <h2> BELOW the <h1>. Give it a classname of "red" for some quick styling - (I added the CSS already).
+
+# Forms in React are BAD
+
+-   Challenge: hook up our form so it (halfway) works.
+
+1. Pull in the `loginUser` function from the api.js file
+2. Call loginUser when the form is submitted and console.log
+   the data that comes back. Use "b@b.com" as the username and
+   "p123" as the password.
+   NOTE: loginUser returns a promise, so you'll need
+   a .then(data => {...}) to access the data, or use
+   a separate aync function defined inside handleSubmit
+3. TBA
