@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Dashboard ("/host")
+        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -1065,5 +1065,51 @@ async function handleSubmit(e) {
 	} catch (error) {
 		console.log(error);
 	}
+}
+```
+
+-   Challenge: Code the sad path 🙁
+
+3. Add a `status` state and default it to "idle". When the login form begins submitting, set it to "submitting". When it's done submitting (whether successful or not), set it to "idle" again.
+4. Disable the button when the `status` state is "submitting" (this may require some Googling if you haven't done this before).
+5. Add an `error` state and default it to `null`. When the form is submitted, reset the errors to `null`. If there's an error from `loginUser` (add a .catch(err => {...}) in the promise chain), set the error to the error that comes back.
+6. Display the error.message below the `h1` if there's ever an error in state
+
+```javascript
+const [status, setStatus] = useState("idle");
+async function handleSubmit(e) {
+	e.preventDefault();
+	try {
+		setStatus("submitting");
+		const response = await loginUser(loginFormData);
+		console.log(response);
+	} catch (error) {
+		console.log(error);
+	} finally {
+		setStatus("idle");
+	}
+}
+
+// BUTTON
+<button disabled={status === "submitting"}>Log in</button>;
+```
+
+```javascript
+const [error, setError] = useState(null);
+async function handleSubmit(e) {
+	e.preventDefault();
+	try {
+		setStatus("submitting");
+		const response = await loginUser(loginFormData);
+		console.log(response);
+	} catch (error) {
+		setError(error.message);
+	} finally {
+		setStatus("idle");
+	}
+}
+
+{
+	error && <h3>{error}</h3>;
 }
 ```

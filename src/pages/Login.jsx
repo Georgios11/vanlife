@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from "react";
+import React, { useState } from "react";
 import { useLoaderData, useSearchParams } from "react-router-dom";
 import { loginUser } from "../API";
 
@@ -9,18 +9,22 @@ export function loader({ request }) {
 export default function Login() {
 	const message = useLoaderData();
 
-	const [loginFormData, setLoginFormData] = React.useState({
+	const [loginFormData, setLoginFormData] = useState({
 		email: "",
 		password: "",
 	});
-
+	const [status, setStatus] = useState("idle");
+	const [error, setError] = useState(null);
 	async function handleSubmit(e) {
 		e.preventDefault();
 		try {
+			setStatus("submitting");
 			const response = await loginUser(loginFormData);
 			console.log(response);
 		} catch (error) {
-			console.log(error);
+			setError(error.message);
+		} finally {
+			setStatus("idle");
 		}
 	}
 
@@ -36,6 +40,7 @@ export default function Login() {
 		<div className="login-container">
 			<h1>Sign in to your account</h1>
 			{message && <h3 className="red">{message}</h3>}
+			{error && <h3>{error}</h3>}
 			<form onSubmit={handleSubmit} className="login-form">
 				<input
 					name="email"
@@ -51,7 +56,7 @@ export default function Login() {
 					placeholder="Password"
 					value={loginFormData.password}
 				/>
-				<button>Log in</button>
+				<button disabled={status === "submitting"}>Log in</button>
 			</form>
 		</div>
 	);
