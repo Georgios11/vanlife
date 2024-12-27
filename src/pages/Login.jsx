@@ -11,6 +11,10 @@ import { loginUser } from "../API";
 export function loader({ request }) {
 	return new URL(request.url).searchParams.get("message");
 }
+export function action() {
+	console.log("Form action");
+	return null;
+}
 export default function Login() {
 	const message = useLoaderData();
 	const navigate = useNavigate();
@@ -48,7 +52,7 @@ export default function Login() {
 			<h1>Sign in to your account</h1>
 			{message && <h3 className="red">{message}</h3>}
 			{error && <h3 className="red">{error}</h3>}
-			<Form onSubmit={handleSubmit} className="login-form">
+			<Form method="post" className="login-form">
 				<input
 					name="email"
 					onChange={handleChange}
