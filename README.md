@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 Dashboard ("/host")
+        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -1312,3 +1312,56 @@ export async function action({ request }) {
 1. Pass the request to all calls to `requireAuth` (this includes all inline loaders on /host routes as well as the loaders defined separately inside the component files of /host routes)
 2. Receive the request in requireAuth and pass along a search param of `redirectTo`
 3. You're on your own for the last part :) You can do it! 💪
+
+```javascript
+loader={async ({request}) => await requireAuth(request)}
+///
+export async function loader({ params,request }) {
+	await requireAuth(request);
+	return getHostVans(params.id);
+}
+
+export async function loader({ request }) {
+	await requireAuth(request);
+	return getHostVans();
+}
+```
+
+-   Receive the request and extract pathname
+-   Pass pathname to login component inside the url
+
+```javascript
+export async function requireAuth(request) {
+	const pathname = new URL(request.url).pathname;
+	console.log(pathname);
+	const isLoggedIn = localStorage.getItem("isLoggedIn");
+
+	if (!isLoggedIn) {
+		throw redirect(
+			`/login?message=You must login first&redirectTo=${pathname}`,
+		);
+	}
+}
+```
+
+-   In Login.jsx receive pathname and redirect to it
+
+```javascript
+export async function action({ request }) {
+	const formData = await request.formData();
+	const email = formData.get("email");
+	const password = formData.get("password");
+	let err = null;
+	const pathname =
+		new URL(request.url).searchParams.get("redirectTo") || "/host";
+
+	try {
+		await loginUser({ email, password });
+		localStorage.setItem("isLoggedIn", true);
+		return redirect(pathname);
+	} catch (error) {
+		err = error.message;
+		return err;
+	}
+}
+```
