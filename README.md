@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     Dashboard ("/host")
+        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -1541,3 +1541,13 @@ export default function HostVans() {
 	);
 }
 ```
+
+-   Challenge: remove manual error handling code and any
+    React state code we no longer need, as well as set up errorElement handling for the following routes:
+    -   /vans
+    -   /vans/:id
+    -   /host/vans
+    -   /host/vans/:id
+
+Remember: we created an <Error /> component awhile back
+that you should be able to reuse.
