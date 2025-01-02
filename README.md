@@ -102,7 +102,7 @@ export default Dashboard;
 
     -   The HostLayout should use Links to navigate to the following
     -   routes:
-        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             Dashboard ("/host")
+        -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       Dashboard ("/host")
         -   -   Income ("/host/income")
         -   -   Reviews ("/host/reviews")
     -   Then replace the parent "/host" route's element below with the new HostLayout component you made.
@@ -1368,6 +1368,8 @@ export async function action({ request }) {
 
 # Deferred Data
 
+-   Switching to the route immediately before kicking off the request in loader function
+
 ```javascript
 import React from "react";
 import {
@@ -1551,3 +1553,29 @@ export default function HostVans() {
 
 Remember: we created an <Error /> component awhile back
 that you should be able to reuse.
+
+## Cloud Firestore Setup
+
+```javascript
+npm install firebase
+```
+
+```javascript
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+	apiKey: "AIzaSyD9deO6bH83PvQm85zKf7Alq2G8QX086GU",
+	authDomain: "vanlife-geo.firebaseapp.com",
+	projectId: "vanlife-geo",
+	storageBucket: "vanlife-geo.firebasestorage.app",
+	messagingSenderId: "1059387194222",
+	appId: "1:1059387194222:web:7e06341e0f477c9d2adf7f",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+```
